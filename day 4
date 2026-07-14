@@ -40,7 +40,40 @@ class Solution {
             q.push(s.front());
             f.pop();
             s.pop();
-        }                   `Q11111`    
+        }
         
     }
 };
+
+
+/*
+
+Palindrome Linked List
+Solved
+Difficulty: MediumAccuracy: 41.48%Submissions: 399K+Points: 4Average Time: 20m
+You are given the head of a singly linked list of positive integers. You have to check if the given linked list is palindrome or not.
+
+*/
+
+class Solution {
+ public:
+    bool isPalindrome(Node *head) {
+        
+        stack<int>st;
+        Node* temp = head;
+        while(temp != NULL){
+            st.push(temp->data);
+            temp = temp->next;
+        }
+        temp = head ;
+        while(temp!=NULL)
+        {
+            if(temp->data != st.top())
+            return false;
+            st.pop();
+            temp = temp->next;
+        }
+        return true;
+    }
+};
+
