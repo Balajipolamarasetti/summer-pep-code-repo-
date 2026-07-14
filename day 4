@@ -76,4 +76,29 @@ class Solution {
         return true;
     }
 };
+/*
+Reverse a linked list
+Solved
+Difficulty: EasyAccuracy: 73.11%Submissions: 395K+Points: 2Average Time: 30m
+You are given the head of a singly linked list. You need to reverse the linked list and return the head of the reversed list.
+*/
+class Solution {
+  public:
+    Node* reverseList(Node* head) {
+        // code here
+      Node*curr=head;
+      Node*prev=NULL;
+      Node*next=NULL;
+      
+      while(curr!=NULL)
+      {
+          next=curr->next;
+          curr->next=prev;
+          prev=curr;
+          curr=next;
+      }
+      
+      return prev;
+    }
+};
 
