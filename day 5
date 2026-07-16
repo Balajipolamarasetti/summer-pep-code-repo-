@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+// Define the structure for a tree node
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor to initialize a new node
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to perform inorder traversal (Left, Root, Right)
+void inorderTraversal(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+    
+    // 1. Traverse the left subtree
+    inorderTraversal(root->left);
+    
+    // 2. Print the data of the current node
+    cout << root->data << " ";
+    
+    // 3. Traverse the right subtree
+    inorderTraversal(root->right);
+}
+
+int main() {
+    // Constructing the root node
+    Node* root = new Node(1);
+
+    // Attaching children to the root
+    root->left = new Node(2);
+    root->right = new Node(3);
+
+    // Attaching children to the left node
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+
+    /* 
+       The resulting tree structure:
+               1
+              / \
+             2   3
+            / \
+           4   5
+    */
+
+    // Print the tree to the console
+    cout << "Inorder Traversal of the binary tree: ";
+    inorderTraversal(root);
+    cout << endl;
+
+    // Note: In a production environment, you should also implement 
+    // a cleanup function to delete nodes and free memory.
+
+    return 0;
+}
