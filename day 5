@@ -62,3 +62,72 @@ int main() {
 
     return 0;
 }
+
+
+
+#include <iostream>
+using namespace std;
+
+// Define the structure for a tree node
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    // Constructor to initialize a new node
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to count the number of leaf nodes
+int countLeafNodes(Node* root) {
+    // Base Case 1: If the tree is empty, there are 0 leaves
+    if (root == nullptr) {
+        return 0;
+    }
+    
+    // Base Case 2: If both left and right children are null, it's a leaf node
+    if (root->left == nullptr && root->right == nullptr) {
+        return 1;
+    }
+    
+    // Recursive Step: Add the leaf count of the left and right subtrees
+    return countLeafNodes(root->left) + countLeafNodes(root->right);
+}
+
+int main() {
+    // Constructing the root node
+    Node* root = new Node(1);
+
+    // Attaching children to the root
+    root->left = new Node(2);
+    root->right = new Node(3);
+
+    // Attaching children to the left node
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    
+    // Attaching a child to the right node to make it interesting
+    root->right->right = new Node(6);
+
+    /* 
+       The resulting tree structure:
+               1
+              / \
+             2   3
+            / \   \
+           4   5   6
+           
+       Nodes 4, 5, and 6 have no children.
+       Total expected leaf nodes = 3
+    */
+
+    // Calculate and print the total number of leaf nodes
+    int leafCount = countLeafNodes(root);
+    cout << "The total number of leaf nodes in the tree is: " << leafCount << endl;
+
+    return 0;
+}
