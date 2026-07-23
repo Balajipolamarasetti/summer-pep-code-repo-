@@ -279,6 +279,56 @@ class Solution {
     }
 };
 
+733. Flood Fill
+Solved
+Easy
+Topics
+premium lock icon
+Companies
+Hint
+You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
+
+To perform a flood fill:
+
+Begin with the starting pixel and change its color to color.
+Perform the same process for each pixel that is directly adjacent (pixels that share a side with the original pixel, either horizontally or vertically) and shares the same color as the starting pixel.
+Keep repeating this process by checking neighboring pixels of the updated pixels and modifying their color if it matches the original color of the starting pixel.
+The process stops when there are no more adjacent pixels of the original color to update.
+Return the modified image after performing the flood fill.
+
+
+class Solution {
+public:
+    void dfs(vector<vector<int>>& image,int i, int j, int newColor, int orgColor ){
+       int n = image.size() ; //row size
+       int m = image[0].size() ; //column size
+
+       //Base Case
+       if(i < 0 || j < 0 || i >= n || j >= m || image[i][j] != orgColor || image[i][j] == newColor){
+           
+           return ;
+       } 
+
+       //Change the starting given cell to new color
+       image[i][j] = newColor ;
+
+       //Check in all the four directions :
+       dfs(image, i-1, j, newColor, orgColor) ;
+       dfs(image, i+1, j, newColor, orgColor) ;
+       dfs(image, i, j+1, newColor, orgColor) ;
+       dfs(image, i, j-1, newColor, orgColor) ;
+
+
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        //func. call to dfs
+        dfs(image,sr,sc,color,image[sr][sc]) ;
+        
+ 
+        return image ; //very important to return the ans. image[][]
+
+    }
+};
 
 
 
