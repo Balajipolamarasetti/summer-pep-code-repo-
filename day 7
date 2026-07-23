@@ -215,5 +215,71 @@ int main() {
         cout << i << " ";
 }
 
+Directed Graph Cycle
+Solved
+Difficulty: MediumAccuracy: 27.88%Submissions: 600K+Points: 4
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.
+The graph is represented as a 2D vector edges[][], where each entry edges[i] = [u, v] denotes an edge from vertex u to v.
+
+Examples:
+
+
+class Solution {
+  public:
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        
+        // by using topo sort 
+        
+        vector<int>indegree(V , 0) ;
+        
+        queue<int>Q ;
+        
+        vector<int>ans ;
+        
+        vector<vector<int>>adj(V) ;
+        
+        for(int i=0 ; i < edges.size() ; i++){
+            int a = edges[i][0] ;
+            int b = edges[i][1] ;
+            
+            adj[a].push_back(b) ;
+            
+        }
+        
+        for(int i=0 ; i < V ; i++){
+            for(int x : adj[i]){
+                indegree[x]++ ;
+            }
+        }
+        
+        for(int i=0 ; i < V ; i++){
+            if(indegree[i] == 0){
+                Q.push(i) ;
+            }
+        }
+        
+        while(!Q.empty()){
+            int f = Q.front() ;
+            Q.pop() ;
+            
+            ans.push_back(f) ;
+            
+            for(int x : adj[f]){
+                indegree[x]-- ;
+                
+                if(indegree[x] == 0){
+                    Q.push(x) ;
+                }
+            }
+        }
+        
+        return ans.size() == V ? false : true  ;
+        
+        
+    }
+};
+
+
+
 
 
