@@ -113,7 +113,52 @@ class Solution {
     }
 };
 
-
+class Solution {
+public:
+ 
+vector<int> topoSort(int V, vector<vector<int>> & edges) {
+// code here
+// bfs approach
+vector<vector<int>> adj(V);
+for (int i = 0 ; i < edges.size() ; i++) {
+int a = edges[i][0] ;
+int b = edges[i][1];
+adj[a].push_back(b) ;
+ 
+}
+vector<int>indegree(V, 0);
+queue<int>q;
+vector<int>ans;
+ 
+for (int u = 0; u<V; u++) { // neighbours indegree increase
+for (int v:adj[u]) {
+indegree[v]++;
+}
+}
+ 
+for (int i = 0; i<V; i++) {
+if (indegree[i] == 0) {
+q.push(i);
+}
+}
+ 
+while (q.size()>0) {
+int curr = q.front();
+q.pop();
+ans.push_back(curr);
+ 
+for (int v:adj[curr]) {
+indegree[v]--;
+ 
+if (indegree[v] == 0) {
+q.push(v);
+}
+}
+}
+return ans;
+ 
+}
+};
 
 
 
