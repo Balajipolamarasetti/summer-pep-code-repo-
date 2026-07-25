@@ -1,0 +1,166 @@
+Rotting Oranges | Multi-Source BFS Level-by-Level Traversal
+
+DiwakarCracksIt
+50 Days Badge 2026
+174
+Jul 18, 2026
+Array
+Breadth-First Search
+Matrix
+C++
+Intuition
+The key observation is that all rotten oranges spread the infection simultaneously every minute.
+
+If we perform a separate DFS or BFS from each rotten orange, one source would finish spreading before another starts, which does not match the problem statement.
+
+Instead, we treat every initially rotten orange as a starting point and begin a multi-source BFS. Since BFS explores nodes level by level, each level naturally represents one minute of infection spread.
+
+The answer is simply the number of BFS levels required to rot all reachable fresh oranges.
+
+Approach
+Traverse the entire grid.
+Push every initially rotten orange into the BFS queue with time 0.
+Mark these oranges as visited.
+Perform a BFS:
+Remove the front orange.
+Update the maximum time encountered.
+Visit its four adjacent cells.
+If a neighboring cell contains a fresh orange and hasn't been visited:
+Mark it as visited.
+Push it into the queue with time currentTime + 1.
+After BFS finishes, traverse the grid once more.
+If any fresh orange was never visited, it can never rot, so return -1.
+Otherwise, return the maximum time recorded.
+Dry Run
+Input
+2 1 1
+1 1 0
+0 1 1
+Initially rotten oranges:
+
+(0,0)
+Queue:
+
+[(0,0,0)]
+Minute 0
+Process:
+
+(0,0)
+New rotten oranges:
+
+(0,1)
+(1,0)
+Queue:
+
+[(0,1,1), (1,0,1)]
+Minute 1
+Process both oranges.
+
+New rotten oranges:
+
+(0,2)
+(1,1)
+Queue:
+
+[(0,2,2), (1,1,2)]
+Minute 2
+Process both oranges.
+
+New rotten orange:
+
+(2,1)
+Queue:
+
+[(2,1,3)]
+Minute 3
+Process:
+
+(2,1)
+New rotten orange:
+
+(2,2)
+Queue:
+
+[(2,2,4)]
+Minute 4
+No more fresh oranges can be infected.
+
+Queue becomes empty.
+
+Answer:
+
+4
+Why does this work?
+BFS explores the grid level by level, and each level corresponds to one minute.
+
+By placing all initially rotten oranges into the queue before starting, they all begin spreading simultaneously.
+
+Every fresh orange is visited exactly once—the first time it becomes rotten—which guarantees that the recorded time is the minimum possible.
+
+If any fresh orange is never visited, it means no rotten orange can reach it, so the answer is -1.
+
+Complexity
+Time complexity: O(m × n)
+
+Each cell is processed at most once.
+
+Space complexity: O(m × n)
+
+The queue and visited matrix can each store up to all cells in the worst case.
+
+Code
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        int tm = 0;
+
+        queue<pair<pair<int, int>, int>> q;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 2) {
+                    q.push({{i, j}, 0});
+                    vis[i][j] = 2;
+                }
+            }
+        }
+
+        while (!q.empty()) {
+            int r = q.front().first.first;
+            int c = q.front().first.second;
+            int t = q.front().second;
+            q.pop();
+
+            tm = max(tm, t);
+
+            int drow[] = {-1, 0, 1, 0};
+            int dcol[] = {0, 1, 0, -1};
+
+            for (int i = 0; i < 4; i++) {
+                int nrow = r + drow[i];
+                int ncol = c + dcol[i];
+
+                if (nrow >= 0 && nrow < m &&
+                    ncol >= 0 && ncol < n &&
+                    vis[nrow][ncol] == 0 &&
+                    grid[nrow][ncol] == 1) {
+
+                    q.push({{nrow, ncol}, t + 1});
+                    vis[nrow][ncol] = 2;
+                }
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && vis[i][j] == 0)
+                    return -1;
+            }
+        }
+
+        return tm;
+    }
+};
